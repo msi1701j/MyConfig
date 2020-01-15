@@ -33,6 +33,46 @@ if not 'Default_Config' in globals():
     Default_Config = {}
 
 class Config:
+    """
+    >>> a=Config('sample.conf')
+    >>> a['test1']
+    'local test1 message'
+    >>> a['test2']
+    'local test2 message'
+    >>> a['test3']
+    'defaults test3 message'
+    >>> a['test4']
+    'defaults test4 message'
+    >>> a['test4'] = 'new message'
+    >>> a['test4']
+    'new message'
+    >>> for k in a:
+    ...     print( k + ': ' + a[k] )
+    ...
+    test1: local test1 message
+    test3: defaults test3 message
+    test4: new message
+    test2: local test2 message
+    >>> 'test2' in a
+    True
+    >>> 'test5' in a
+    False
+    >>> del a['test3']
+    >>> for k in a:
+    ...     print( k + ': ' + a[k] )
+    ...
+    test1: local test1 message
+    test4: new message
+    test2: local test2 message
+    >>> del a['test5']
+    >>> for k in a:
+    ...     print( k + ': ' + a[k] )
+    ...
+    test1: local test1 message
+    test4: new message
+    test2: local test2 message
+    """
+
     global Default_ConfigFile
     global Default_Config
     global Config_Dir
@@ -66,7 +106,8 @@ class Config:
         self.__params[key.lower()] = value
 
     def __delitem__(self, key):
-        del self.__params[key.lower()]
+        if key in self.__params:
+            del self.__params[key.lower()]
 
     def __contains__(self, key):
         """ operator 'in' as a boolean to test item in this class """
