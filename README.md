@@ -58,20 +58,22 @@ python -m unittest discover tests
 
 ```
 ./
-|-- README.md ……………………… このファイル
-|-- custom_config ………………… custom_config モジュールディレクトリ
-|   |-- __init__.py ……………… custom_config モジュール __init__.py
-|   |-- __main__.py ……………… custom_config モジュール __main__.py
-|   `-- _custom_config.py ……… custom_config モジュール本体
-|-- default ………………………… default 設定ディレクトリ
-|   |-- custom_config.conf  …… 設定ファイル名省略時の default 設定ファイル
-|   `-- sample.conf ……………… サンプル設定ファイル
-|-- local …………………………… local 設定ディレクトリ
-|   |-- custom_config.conf  …… 設定ファイル名省略時の local 設定ファイル
-|   `-- sample.conf ……………… サンプル設定ファイル
-|-- setup_MyConfigEnv.sh  ……… テスト用環境変数設定ファイル
-`-- tests …………………………… テストディレクトリ
-    `-- test_custom_config.py … テストファイル
+├─ README.md ........................... このファイル
+├─ custom_config/ ...................... custom_config モジュールディレクトリ
+│    ├─ __init__.py ................... custom_config モジュール __init__.py
+│    ├─ __main__.py ................... custom_config モジュール __main__.py
+│    └─ _custom_config.py ............. custom_config モジュール本体
+├─ default/ ............................ default 設定ディレクトリ
+│    ├─ custom_config.conf ............ 設定ファイル名省略時の default 設定ファイル
+│    └─ sample.conf ................... サンプル設定ファイル
+├─ local/ .............................. local 設定ディレクトリ
+│    ├─ custom_config.conf ............ 設定ファイル名省略時の local 設定ファイル
+│    └─ sample.conf ................... サンプル設定ファイル
+├─ setup_MyConfigEnv.sh ................ テスト用環境変数設定ファイル
+└─ tests/ .............................. テストディレクトリ
+      └─ unit/ ......................... Unit テスト用ディレクトリ
+            ├─ __init__.py ............. ディレクトリマーカー
+            └─ test_custom_config.py ... テストファイル
 ```
 
 ---
