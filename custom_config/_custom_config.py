@@ -25,7 +25,7 @@ if not 'My_Module_Path' in globals():
         My_Module_Path = os.getcwd()
 
 Config_Dir = os.getenv( 'CUSTOM_CONFIG_DIR', default=os.getcwd() )
-    
+
 if not 'Default_ConfigFile' in globals():
     Default_ConfigFile = os.getenv( 'CUSTOM_CONFIG_FILE', default=My_Module_Name + '.conf' )
 
@@ -77,10 +77,11 @@ class Config:
     global Default_Config
     global Config_Dir
 
-    def __init__(self, config_file=Default_ConfigFile, default_config=Default_Config):
+    def __init__(self, config_file=Default_ConfigFile, configdir_base=Config_Dir, default_config=Default_Config):
         """ Constructor for Config class """
         self.__configfile = config_file
-        self.__config = self.__load_config( self.__configfile )
+        self.__configdir_base = configdir_base
+        self.__config = self.__load_config( self.__configfile, self.__configdir_base )
 
         self.__params = {}
         for key in default_config:
@@ -120,29 +121,29 @@ class Config:
 
     # app_root()
     # App のルートディレクトリ
-    def __app_root(self):
+    def __app_root(self, configdir_base=Config_Dir):
         """ get the application root """
         # app_file = getattr(sys.modules['__main__'], '__file__', sys.executable)
         # # return os.path.dirname(os.path.abspath(os.path.dirname(app_file)))
         # return os.path.abspath(os.path.dirname(app_file))
-        return os.path.abspath(Config_Dir)
+        return os.path.abspath(configdir_base)
 
 
     # _search_path()
     # 独自の conf ファイルの検索パスの生成
-    def __search_path(self, name, candidate_dirs=['default', 'local']):
+    def __search_path(self, name, configdir_base=Config_Dir, candidate_dirs=['default', 'local']):
         """ get search path for config file """
-        self.__root = self.__app_root()
+        self.__root = self.__app_root(configdir_base)
         paths = [p for p in [os.path.join(self.__root, d, name) for d in candidate_dirs] if os.path.exists(p)]
         return paths
 
 
     # load_config()
     # 見つかった候補ディレクトリから、設定ファイルを読出し、 ConfigParser で読込みます。
-    def __load_config(self, name, candidate_dirs=['default', 'local'], encoding='utf_8_sig'):
+    def __load_config(self, name, configdir_base=Config_Dir, candidate_dirs=['default', 'local'], encoding='utf_8_sig'):
         """ load config file """
         config = configparser.ConfigParser()
-        for cf in self.__search_path(name, candidate_dirs):
+        for cf in self.__search_path(name, configdir_base, candidate_dirs):
             with io.open(cf, encoding=encoding) as f:
                 if six.PY2:
                     config.readfp(f)
